@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.clj.crmproj.mapper.Guest4Mapper" >
+  <resultMap id="BaseResultMap" type="org.clj.crmproj.entity.Guest4" >
+    <id column="sid" property="sid" jdbcType="CHAR" />
+    <result column="attr1" property="attr1" jdbcType="VARCHAR" />
+    <result column="attr2" property="attr2" jdbcType="VARCHAR" />
+    <result column="attr3" property="attr3" jdbcType="VARCHAR" />
+    <result column="attr4" property="attr4" jdbcType="VARCHAR" />
+    <result column="attr5" property="attr5" jdbcType="VARCHAR" />
+    <result column="attr6" property="attr6" jdbcType="VARCHAR" />
+    <result column="attr7" property="attr7" jdbcType="VARCHAR" />
+    <result column="attr8" property="attr8" jdbcType="VARCHAR" />
+    <result column="attr9" property="attr9" jdbcType="VARCHAR" />
+    <result column="attr10" property="attr10" jdbcType="VARCHAR" />
+    <result column="attr11" property="attr11" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sid, attr1, attr2, attr3, attr4, attr5, attr6, attr7, attr8, attr9, attr10, attr11
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from guest4
+    where sid = #{sid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from guest4
+    where sid = #{sid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="org.clj.crmproj.entity.Guest4" >
+    insert into guest4 (sid, attr1, attr2, 
+      attr3, attr4, attr5, 
+      attr6, attr7, attr8, 
+      attr9, attr10, attr11
+      )
+    values (#{sid,jdbcType=CHAR}, #{attr1,jdbcType=VARCHAR}, #{attr2,jdbcType=VARCHAR}, 
+      #{attr3,jdbcType=VARCHAR}, #{attr4,jdbcType=VARCHAR}, #{attr5,jdbcType=VARCHAR}, 
+      #{attr6,jdbcType=VARCHAR}, #{attr7,jdbcType=VARCHAR}, #{attr8,jdbcType=VARCHAR}, 
+      #{attr9,jdbcType=VARCHAR}, #{attr10,jdbcType=VARCHAR}, #{attr11,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.clj.crmproj.entity.Guest4" >
+    insert into guest4
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="attr1 != null" >
+        attr1,
+      </if>
+      <if test="attr2 != null" >
+        attr2,
+      </if>
+      <if test="attr3 != null" >
+        attr3,
+      </if>
+      <if test="attr4 != null" >
+        attr4,
+      </if>
+      <if test="attr5 != null" >
+        attr5,
+      </if>
+      <if test="attr6 != null" >
+        attr6,
+      </if>
+      <if test="attr7 != null" >
+        attr7,
+      </if>
+      <if test="attr8 != null" >
+        attr8,
+      </if>
+      <if test="attr9 != null" >
+        attr9,
+      </if>
+      <if test="attr10 != null" >
+        attr10,
+      </if>
+      <if test="attr11 != null" >
+        attr11,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=CHAR},
+      </if>
+      <if test="attr1 != null" >
+        #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null" >
+        #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null" >
+        #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="attr4 != null" >
+        #{attr4,jdbcType=VARCHAR},
+      </if>
+      <if test="attr5 != null" >
+        #{attr5,jdbcType=VARCHAR},
+      </if>
+      <if test="attr6 != null" >
+        #{attr6,jdbcType=VARCHAR},
+      </if>
+      <if test="attr7 != null" >
+        #{attr7,jdbcType=VARCHAR},
+      </if>
+      <if test="attr8 != null" >
+        #{attr8,jdbcType=VARCHAR},
+      </if>
+      <if test="attr9 != null" >
+        #{attr9,jdbcType=VARCHAR},
+      </if>
+      <if test="attr10 != null" >
+        #{attr10,jdbcType=VARCHAR},
+      </if>
+      <if test="attr11 != null" >
+        #{attr11,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.clj.crmproj.entity.Guest4" >
+    update guest4
+    <set >
+      <if test="attr1 != null" >
+        attr1 = #{attr1,jdbcType=VARCHAR},
+      </if>
+      <if test="attr2 != null" >
+        attr2 = #{attr2,jdbcType=VARCHAR},
+      </if>
+      <if test="attr3 != null" >
+        attr3 = #{attr3,jdbcType=VARCHAR},
+      </if>
+      <if test="attr4 != null" >
+        attr4 = #{attr4,jdbcType=VARCHAR},
+      </if>
+      <if test="attr5 != null" >
+        attr5 = #{attr5,jdbcType=VARCHAR},
+      </if>
+      <if test="attr6 != null" >
+        attr6 = #{attr6,jdbcType=VARCHAR},
+      </if>
+      <if test="attr7 != null" >
+        attr7 = #{attr7,jdbcType=VARCHAR},
+      </if>
+      <if test="attr8 != null" >
+        attr8 = #{attr8,jdbcType=VARCHAR},
+      </if>
+      <if test="attr9 != null" >
+        attr9 = #{attr9,jdbcType=VARCHAR},
+      </if>
+      <if test="attr10 != null" >
+        attr10 = #{attr10,jdbcType=VARCHAR},
+      </if>
+      <if test="attr11 != null" >
+        attr11 = #{attr11,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.clj.crmproj.entity.Guest4" >
+    update guest4
+    set attr1 = #{attr1,jdbcType=VARCHAR},
+      attr2 = #{attr2,jdbcType=VARCHAR},
+      attr3 = #{attr3,jdbcType=VARCHAR},
+      attr4 = #{attr4,jdbcType=VARCHAR},
+      attr5 = #{attr5,jdbcType=VARCHAR},
+      attr6 = #{attr6,jdbcType=VARCHAR},
+      attr7 = #{attr7,jdbcType=VARCHAR},
+      attr8 = #{attr8,jdbcType=VARCHAR},
+      attr9 = #{attr9,jdbcType=VARCHAR},
+      attr10 = #{attr10,jdbcType=VARCHAR},
+      attr11 = #{attr11,jdbcType=VARCHAR}
+    where sid = #{sid,jdbcType=CHAR}
+  </update>
+</mapper>

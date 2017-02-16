@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.clj.crmproj.mapper.SDMapper" >
+  <resultMap id="BaseResultMap" type="org.clj.crmproj.entity.SD" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="sid" property="sid" jdbcType="CHAR" />
+    <result column="did" property="did" jdbcType="CHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sid, did, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from s_d
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from s_d
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="org.clj.crmproj.entity.SD" >
+    insert into s_d (id, sid, did, note
+      )
+    values (#{id,jdbcType=CHAR}, #{sid,jdbcType=CHAR}, #{did,jdbcType=CHAR}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.clj.crmproj.entity.SD" >
+    insert into s_d
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="sid != null" >
+        #{sid,jdbcType=CHAR},
+      </if>
+      <if test="did != null" >
+        #{did,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.clj.crmproj.entity.SD" >
+    update s_d
+    <set >
+      <if test="sid != null" >
+        sid = #{sid,jdbcType=CHAR},
+      </if>
+      <if test="did != null" >
+        did = #{did,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.clj.crmproj.entity.SD" >
+    update s_d
+    set sid = #{sid,jdbcType=CHAR},
+      did = #{did,jdbcType=CHAR},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.clj.crmproj.mapper.RPMapper" >
+  <resultMap id="BaseResultMap" type="org.clj.crmproj.entity.RP" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="rid" property="rid" jdbcType="CHAR" />
+    <result column="pid" property="pid" jdbcType="CHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, rid, pid, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from r_p
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from r_p
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="org.clj.crmproj.entity.RP" >
+    insert into r_p (id, rid, pid, note
+      )
+    values (#{id,jdbcType=CHAR}, #{rid,jdbcType=CHAR}, #{pid,jdbcType=CHAR}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.clj.crmproj.entity.RP" >
+    insert into r_p
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=CHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.clj.crmproj.entity.RP" >
+    update r_p
+    <set >
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=CHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=CHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.clj.crmproj.entity.RP" >
+    update r_p
+    set rid = #{rid,jdbcType=CHAR},
+      pid = #{pid,jdbcType=CHAR},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>
