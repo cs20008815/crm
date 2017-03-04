@@ -1,37 +1,67 @@
 package org.clj.crmproj.service.impl;
 
-import org.clj.crmproj.entity.School;
-import org.clj.crmproj.mapper.SchoolMapper;
+import org.clj.crmproj.entity.SysSchool;
+import org.clj.crmproj.mapper.BaseMapper;
+import org.clj.crmproj.mapper.SysSchoolMapper;
 import org.clj.crmproj.service.SchoolService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2016/11/27.
+ * Created by Administrator on 2017/2/28.
  */
-@Service("schoolService")
-public class SchoolServiceImpl implements SchoolService {
-
-    @Resource
-    private SchoolMapper schoolMapper;
+@Service
+@Transactional(value="transactionManager")
+public class SchoolServiceImpl extends BaseServiceImpl implements SchoolService {
+    @Autowired
+    private SysSchoolMapper sysSchoolMapper;
 
     @Override
-    public List<School> fandAll() {
-        return schoolMapper.selectAll();
+    public BaseMapper getMapper(){
+        return sysSchoolMapper;
     }
 
-    public List<School> selectByAttr1(Map map){
-        return schoolMapper.selectByAttr1(map);
+    @Override
+    public int removeByPrimaryKey(String id) {
+        return sysSchoolMapper.deleteByPrimaryKey(id);
     }
 
-    public int addSelective(School record){
-        return schoolMapper.insertSelective(record);
+    @Override
+    public int add(SysSchool record) {
+        return sysSchoolMapper.insert(record);
     }
 
-    public int removeByPrimaryKey(String sid){
-        return schoolMapper.deleteByPrimaryKey(sid);
+    @Override
+    public int addSelective(SysSchool record) {
+        return sysSchoolMapper.insertSelective(record);
+    }
+
+    @Override
+    public SysSchool queryByPrimaryKey(String id) {
+        return sysSchoolMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int editByPrimaryKeySelective(SysSchool record) {
+        return sysSchoolMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int editByPrimaryKey(SysSchool record) {
+        return sysSchoolMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<Map> queryByOther(Map record) {
+        return sysSchoolMapper.selectByOther(record);
+    }
+
+    @Override
+    public int queryCount(Map map){
+        return sysSchoolMapper.selectCount(map);
     }
 }

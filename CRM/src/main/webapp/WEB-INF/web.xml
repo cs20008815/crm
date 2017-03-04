@@ -51,7 +51,7 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>html/main.html</welcome-file>
+        <welcome-file>login</welcome-file>
         <!--<welcome-file>index.html</welcome-file>-->
     </welcome-file-list>
     <session-config>

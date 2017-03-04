@@ -15,26 +15,28 @@ define(
             },
             render: function () {
                 this.$el.html(this.templates.loginTemplate());
-                $('#indexDiv').html(this.el);
+                $('body').html(this.el);
             },
             events: {
-                "click #login" : "login"
+                "click #loginsubmit" : "login"
             },
             login: function(){
                 var _this = this;
                 var model = new Backbone.Model;
+
                 model.set({
                     "username": _this.$("#username").val(),
                     "password": _this.$("#password").val()
                 })
+                console.log(JSON.stringify(model));
                 model.fetchEx({},{
-                    url : 'userlogin',
+                    url : 'api/login',
                     success: function (data) {
                         if(data && data.get("status") == "S"){
                             //清空列表数据
-                            window.location.href = "#index";
-                            //window.location.href = "index";
+                            window.location.href = "#home";
                         }else{
+                            console.log(data.get("errorMessage"));
                             _this.$("#loginMsg").html(data.get("errorMessage"));
                         }
                     }

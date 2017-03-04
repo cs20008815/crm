@@ -1,35 +1,62 @@
 package org.clj.crmproj.service.impl;
 
-import org.clj.crmproj.entity.Guest;
-import org.clj.crmproj.mapper.GuestMapper;
+import org.clj.crmproj.entity.SysGuest;
+import org.clj.crmproj.mapper.BaseMapper;
+import org.clj.crmproj.mapper.SysGuestMapper;
 import org.clj.crmproj.service.GuestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2016/11/30.
+ * Created by Administrator on 2017/2/28.
  */
-@Service("guestService")
-public class GuestServiceImpl implements GuestService {
-    @Resource
-    private GuestMapper guestMapper;
+@Service
+@Transactional(value="transactionManager")
+public class GuestServiceImpl extends BaseServiceImpl implements GuestService {
+    @Autowired
+    private SysGuestMapper sysGuestMapper;
 
-    public List<Map> fandByOpt(Map map) {
-        return guestMapper.selectByOpt(map);
+    @Override
+    public BaseMapper getMapper(){
+        return sysGuestMapper;
     }
 
-    public Map fandCount(Map map) {
-        return guestMapper.selectCount(map);
+    @Override
+    public int removeByPrimaryKey(String id) {
+        return sysGuestMapper.deleteByPrimaryKey(id);
     }
 
-    public int newGuest(Guest guest) {
-        return guestMapper.insertSelective(guest);
+    @Override
+    public int add(SysGuest record) {
+        return sysGuestMapper.insert(record);
     }
 
-    public int editByPrimaryKeySelective(Guest guest){
-        return guestMapper.updateByPrimaryKeySelective(guest);
+    @Override
+    public int addSelective(SysGuest record) {
+        return sysGuestMapper.insertSelective(record);
+    }
+
+    @Override
+    public SysGuest queryByPrimaryKey(String id) {
+        return sysGuestMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int editByPrimaryKeySelective(SysGuest record) {
+        return sysGuestMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public int editByPrimaryKey(SysGuest record) {
+        return sysGuestMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<Map> queryByOther(Map record) {
+        return sysGuestMapper.selectByOther(record);
     }
 }

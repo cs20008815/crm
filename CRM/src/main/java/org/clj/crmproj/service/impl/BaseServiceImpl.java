@@ -6,118 +6,50 @@ import org.clj.crmproj.service.BaseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2017/1/21.
+ * Created by Administrator on 2017/2/20.
  */
 @Service("baseService")
-public class BaseServiceImpl implements BaseService {
-    @Resource
-    private BhqMapper bhqMapper;
-    @Resource
-    private DeptMapper deptMapper;
-    @Resource
-    private RoleMapper roleMapper;
-    @Resource
-    private PermMapper permMapper;
-    @Resource
-    private UserPermMapper userPermMapper;
+public abstract class BaseServiceImpl<T,ID extends Serializable> implements BaseService<T,ID> {
 
-    public List<Bhq> fandBhqAll(){
-        return bhqMapper.selectAll();
+    public abstract BaseMapper getMapper();
+
+    @Override
+    public int removeByPrimaryKey(ID id){
+        return getMapper().deleteByPrimaryKey(id);
     }
 
-    public List<Bhq> fandBhqByAttr1(Map map){
-        return bhqMapper.selectByAttr1(map);
+    @Override
+    public int add(T record){
+        return getMapper().insert(record);
     }
 
-    public int addBhqSelective(Bhq record){
-        return bhqMapper.insertSelective(record);
+    @Override
+    public int addSelective(T record){
+        return getMapper().insertSelective(record);
     }
 
-    public int editBhqSelective(Bhq record){
-        return bhqMapper.updateByPrimaryKeySelective(record);
+    @Override
+    public T queryByPrimaryKey(ID id){
+        return (T)getMapper().selectByPrimaryKey(id);
     }
 
-    public int removeBhqByPrimaryKey(String sid){
-        return bhqMapper.deleteByPrimaryKey(sid);
+    @Override
+    public int editByPrimaryKeySelective(T record){
+        return getMapper().updateByPrimaryKeySelective(record);
     }
 
-    //dept
-    public List<Dept> fandDeptAll(){
-        return deptMapper.selectAll();
+    @Override
+    public int editByPrimaryKey(T record){
+        return getMapper().updateByPrimaryKey(record);
     }
 
-    public List<Dept> fandDeptByAttr1(Map map){
-        return deptMapper.selectByAttr1(map);
-    }
-
-    public int addDeptSelective(Dept record){
-        return deptMapper.insertSelective(record);
-    }
-
-    public int editDeptSelective(Dept record){
-        return deptMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public int removeDeptByPrimaryKey(String sid){
-        return deptMapper.deleteByPrimaryKey(sid);
-    }
-
-    //Role
-    public List<Role> fandRoleAll(){
-        return roleMapper.selectAll();
-    }
-
-    public List<Role> fandRoleByAttr1(Map map){
-        return roleMapper.selectByAttr1(map);
-    }
-
-    public int addRoleSelective(Role record){
-        return roleMapper.insertSelective(record);
-    }
-
-    public int editRoleSelective(Role record){
-        return roleMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public int removeRoleByPrimaryKey(String sid){
-        return roleMapper.deleteByPrimaryKey(sid);
-    }
-
-    //Perm
-    public List<Perm> fandPermAll(){
-        return permMapper.selectAll();
-    }
-
-    public List<Perm> fandPermByAttr1(Map map){
-        return permMapper.selectByAttr1(map);
-    }
-
-    public int addPermSelective(Perm record){
-        return permMapper.insertSelective(record);
-    }
-
-    public int editPermSelective(Perm record){
-        return permMapper.updateByPrimaryKeySelective(record);
-    }
-
-    public int removePermByPrimaryKey(String sid){
-        return permMapper.deleteByPrimaryKey(sid);
-    }
-
-    //Perm
-    public List<UserPerm> fandUserPermByAttr1(Map map){
-        return userPermMapper.selectByOther(map);
-    }
-
-    public int addUserPermSelective(UserPerm record){
-        return userPermMapper.insertSelective(record);
-    }
-
-    public int removeUserPermByPrimaryKey(UserPerm record){
-        return userPermMapper.updateByPrimaryKeySelective(record);
+    @Override
+    public List<T> queryByOther(T record){
+        return getMapper().selectByOther(record);
     }
 }

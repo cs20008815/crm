@@ -17,6 +17,11 @@ public class Response {
         this.setErrorMessage(errorMessage);
     }
 
+    public Response(String status, String errorMessage) {
+        this.setStatus(status);
+        this.setErrorMessage(errorMessage);
+    }
+
     public Response(Object output) {
         this.setOutput(output);
     }

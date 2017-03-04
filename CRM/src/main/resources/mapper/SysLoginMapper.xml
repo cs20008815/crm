@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.clj.crmproj.mapper.SysLoginMapper" >
+  <select id="loginByMap" resultType="java.util.HashMap" parameterType="java.util.Map" >
+    Select sys_user.sid uid, sys_user.attr1 uname, sys_user.attr2 upwd, sys_user.attr3 userName,
+      sys_school.sid schoolId, sys_school.attr1 schoolName,
+      sys_dept.sid deptId, sys_dept.attr1 deptName,
+      sys_role.sid roleId, sys_role.attr1 roleName
+      FROM sys_user
+      LEFT JOIN sys_user_school on sys_user_school.attr1 = sys_user.sid and sys_user_school.attr20 = 1
+      LEFT JOIN sys_school on sys_school.sid = sys_user_school.attr2 and sys_school.attr20 = 1
+      LEFT JOIN sys_school_dept on sys_school_dept.attr1 = sys_school.sid and sys_school_dept.attr20 = 1 and sys_school_dept.attr3 = sys_user.sid
+      LEFT JOIN sys_dept on sys_dept.sid = sys_school_dept.attr2 and sys_dept.attr20 = 1
+      LEFT JOIN sys_dept_role on sys_dept_role.attr1 = sys_dept.sid and sys_dept_role.attr20 = 1 and sys_dept_role.attr3 = sys_user.sid
+      LEFT JOIN sys_role on sys_role.sid = sys_dept_role.attr2 and sys_role.attr20 = 1
+      WHERE sys_user.attr20 = 1
+      and sys_user.attr1 = #{user,jdbcType=VARCHAR}
+      and sys_user.attr2 = #{pwd,jdbcType=VARCHAR}
+  </select>
+
+  <select id="menuByMap" resultType="java.util.HashMap" parameterType="java.util.Map" >
+      select sys_menu.sid sid, sys_menu.attr1 sname, sys_menu.attr2 url, sys_menu.attr3 className
+            from sys_menu
+            INNER JOIN sys_role_menu on sys_role_menu.attr2 = sys_menu.sid
+            and sys_role_menu.attr20 = '1'
+            WHERE sys_menu.attr20 = '1' and sys_menu.attr15 = #{attr15,jdbcType=VARCHAR}
+            ORDER BY
+            sys_menu.attr18 ASC
+  </select>
+
+  <select id="menuByMap1" resultType="java.util.HashMap" parameterType="java.util.Map" >
+      select sys_menu.sid sid, sys_menu.attr1 sname, sys_menu.attr2 url, sys_menu.attr3 className
+        from sys_menu
+        INNER JOIN sys_role_menu on sys_role_menu.attr2 = sys_menu.sid
+        and sys_role_menu.attr20 = '1' and sys_role_menu.attr1 = #{attr1,jdbcType=VARCHAR}
+        WHERE sys_menu.attr20 = '1' and sys_menu.attr15 = #{attr15,jdbcType=VARCHAR}
+        ORDER BY
+        sys_menu.attr18 ASC
+  </select>
+</mapper>

@@ -1,59 +1,66 @@
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<html>
-<%
-  String path = request.getContextPath();
-  String basePath = request.getScheme() + "://"
-          + request.getServerName() + ":" + request.getServerPort()
-          + path + "/";
-%>
+<!DOCTYPE html>
+<html lang="zh">
+<base href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/">
 <head>
-  <style>
-    body{
-      width: 96%;
-      background-image: url("<%=basePath%>img/bg.png");
-      min-width: 768px;
-      min-height: 400px;
-    }
-    #loginDiv{
-      width: 744px;
-      height: 394px;
-      background-image: url("<%=basePath%>img/login.png");
-      margin:0 auto;
-    }
-  </style>
-  <script src="jquery/jquery.js" type="text/javascript"></script>
-  <script>
-    var href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}";
-  </script>
-  <title>CRM 企业管理系统</title>
+    <meta content="webkit" name="renderer"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="all">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" media="screen"/>
+    <title>登录临淄区智慧安监系统</title>
+    <script src="js/libs/jquery/jquery.js" type="text/javascript"></script>
 </head>
-<body style="text-align: center;">
-<div style="width: 100%; height: 200px;">
+<body>
+<div class="login-box">
+    <table style="width: 100%; height: 100%;position: absolute; top: 0px; left: 0px;">
+        <tr>
+            <td align="center">
+                <div class="w1200">
+                    <!--<img src="img/login-logo.png" class="login-logo" />-->
+                    <div class="tip" style="display: none;" id="errormsg"></div>
+                    <div class="login-form">
+                        <input type="text" class="login-text zhangh" id="username" placeholder="请输入用户名"/>
+                        &nbsp;<input type="password" class="login-text mima" id="password" placeholder="请输入密码"/>
+                        <input type="button" class="btn" id="loginsubmit" value="登录"/>
 
-</div>
-<div id="loginDiv">
-  <div style="padding: 180px; color: #ffffff">
-    <form action="login" method="post">
-      <div>用户：<input id="username" name="username" type="text"></div>
-      <div>密码：<input id="password" name="password" type="password"></div>
-      <div style="padding: 10px;">
-        <input id="login" type="submit" value="登陆">
-      </div>
-      <div id="loginMsg" style="padding: 100px 0 0 0 ;color: #ff0000;display: block;">
-        <%= null != request.getAttribute("loginErr")?request.getAttribute("loginErr"):""%>
-      </div>
+                        <div class="rem" id="loginMsg" style=" color: red; font-size: 16px; text-align: left">
 
-    </form>
-  </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: fixed;top: 90%;left: 40%;font-size: .9rem;">
+                    <div style="display: block;">© 1998-2016 空中英语 版权所有 &nbsp;</div>
+                    <div><a href="http://www.miitbeian.gov.cn" target="_blank"></a></div>
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
-<div style="height: 200px;line-height:50px; color: #cccccc"> ©2017 空中英语语言培训有限公司 版权所有</div>
-</body>
 <script>
+    var login = function(){
+        var opt = {
+            "username": $("#username").val(),
+            "password": $("#password").val()
+        };
+        $.ajax({
+            url: 'api/login',
+            dataType: 'json',
+            method:'post',
+            data:opt,
+            success: function(data){
+                if(data.isSucc == "true"){
+                    window.location.href = "/index";
+                }else{
+                    $("#loginMsg").html(data.msg);
+                }
+            },
+            error: function(){
 
+            }
+        });
+    }
+    $("#loginsubmit").click(function(){
+        login();
+    });
 </script>
-</html>

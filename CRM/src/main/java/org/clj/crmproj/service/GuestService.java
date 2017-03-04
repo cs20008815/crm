@@ -1,29 +1,19 @@
 package org.clj.crmproj.service;
 
-import org.clj.crmproj.entity.Guest;
+import org.clj.crmproj.entity.SysGuest;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Administrator on 2016/11/30.
+ * Created by Administrator on 2017/2/27.
  */
-public interface GuestService {
-    /**
-     * 获取客户信息
-     * @return User
-     * @throws Exception
-     */
-    List<Map> fandByOpt(Map map);
-
-    /**
-     * 获取客户总数
-     * @return count
-     * @throws Exception
-     */
-    Map fandCount(Map map);
-
-    int newGuest(Guest guest);
-
-    int editByPrimaryKeySelective(Guest guest);
+public interface GuestService extends BaseService {
+    int removeByPrimaryKey(String id);
+    int add(SysGuest record);
+    int addSelective(SysGuest record);
+    SysGuest queryByPrimaryKey(String id);
+    int editByPrimaryKeySelective(SysGuest record);
+    int editByPrimaryKey(SysGuest record);
+    List<Map> queryByOther(Map record);
 }

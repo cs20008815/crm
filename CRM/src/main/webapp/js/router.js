@@ -4,22 +4,46 @@
 define(['jquery', 'underscore', 'backbone'
     , 'view/Login/LoginView'
     , 'view/Main/MainView'
+    , 'view/Setting/QXSettingView'
+    , 'view/Setting/school/View'
+    , 'view/Setting/dept/View'
+    , 'view/Setting/role/View'
 ], function ($, _, Backbone
     , LoginView
-    , MainView) {
+    , MainView
+    , QXSettingView
+    , SchoolView
+    , DeptView
+    , RoleView
+) {
     var AppRouter = Backbone.Router.extend({
         routes: {
-            "": "home",
-            "home": "home",
-            "index":"index"
+            "sy": "home",
+            "index":"home",
+            "quanxianSetting":"quanxianSetting",
+            "zhongxinSetting":"zhongxinSetting",
+            "bumenSetting":"bumenSetting",
+            "zhiweiSetting":"zhiweiSetting"
+
         },
-        //login
-        "home": function () {
-            var view = new LoginView();
-        },
-        "index": function(){
-            console.log("------------");
+        home: function(){
             var view = new MainView();
+        },
+        quanxianSetting:function(){
+            var view = new QXSettingView();
+            $("#rightdiv").html(view.$el);
+        },
+        zhongxinSetting:function(){
+            var view = new SchoolView();
+            $("#rightdiv").html(view.$el);
+        },
+        bumenSetting:function(){
+            var view = new DeptView();
+            $("#rightdiv").html(view.$el);
+        },
+        zhiweiSetting:function(){
+            var view = new RoleView();
+            $("#rightdiv").html(view.$el);
         }
     });
     return AppRouter;

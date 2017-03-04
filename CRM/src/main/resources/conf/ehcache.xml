@@ -17,8 +17,8 @@
            eternal="false"
            overflowToDisk="true"
            diskSpoolBufferSizeMB="20"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off"
             />
