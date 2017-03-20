@@ -77,4 +77,9 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     public List<Map> queryMenuBySid(Map map){
         return sysQueryMapper.queryMenuByRoleId(map);
     }
+
+    @Override
+    public int queryCount(Map map){
+        return sysMenuMapper.selectCount(map);
+    }
 }

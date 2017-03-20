@@ -70,4 +70,16 @@ public class LoginController {
             return new Response("S","已登录");
         }
     }
+
+    @RequestMapping(value = "/getNowUser")
+    @ResponseBody
+    public Response getNowUser() throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        return new Response(user);
+    }
 }

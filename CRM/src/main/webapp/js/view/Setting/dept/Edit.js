@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
     function ($, _, Backbone, iziToast
         , edit
     ) {
-        Add = Backbone.View.extend({
+        Edit = Backbone.View.extend({
             templates: {
                 "edit": _.template(edit)
             },
@@ -47,7 +47,6 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                                         var entity = data.get("output");
                                         _this.$("#schoolName").attr("inputid",entity[0].sid);
                                         _this.$("#schoolName").val(entity[0].attr1);
-                                        console.log(entity[0].attr1);
                                     }else{
                                         iziNotyf.alert("查询失败");
                                     }
@@ -90,5 +89,5 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                 this.layer.cancleView();
             }
         });
-        return Add;
+        return Edit;
     });

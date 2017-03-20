@@ -16,4 +16,8 @@ public interface GuestService extends BaseService {
     int editByPrimaryKeySelective(SysGuest record);
     int editByPrimaryKey(SysGuest record);
     List<Map> queryByOther(Map record);
+    List<Map> queryPage(Map record);
+    List<Map> queryPageByMk(Map record);
+    int queryCount(Map map);
+    int addBatch(List<SysGuest> record);
 }

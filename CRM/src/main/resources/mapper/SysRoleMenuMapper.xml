@@ -28,6 +28,210 @@
     sid, attr1, attr2, attr3, attr4, attr5, attr6, attr7, attr8, attr9, attr10, attr11, 
     attr12, attr13, attr14, attr15, attr16, attr17, attr18, attr19, attr20
   </sql>
+  <insert id="insertOrUpdate" parameterType="org.clj.crmproj.entity.SysRoleMenu">
+    <selectKey keyProperty="count" resultType="int" order="BEFORE">
+      select count(*) from sys_role_menu where attr1 = #{attr1,jdbcType=CHAR} and attr2 = #{attr2,jdbcType=CHAR}
+    </selectKey>
+    <if test="count > 0">
+      update sys_role_menu
+      <set >
+        <if test="attr1 != null" >
+          attr1 = #{attr1,jdbcType=VARCHAR},
+        </if>
+        <if test="attr2 != null" >
+          attr2 = #{attr2,jdbcType=VARCHAR},
+        </if>
+        <if test="attr3 != null" >
+          attr3 = #{attr3,jdbcType=VARCHAR},
+        </if>
+        <if test="attr4 != null" >
+          attr4 = #{attr4,jdbcType=VARCHAR},
+        </if>
+        <if test="attr5 != null" >
+          attr5 = #{attr5,jdbcType=VARCHAR},
+        </if>
+        <if test="attr6 != null" >
+          attr6 = #{attr6,jdbcType=VARCHAR},
+        </if>
+        <if test="attr7 != null" >
+          attr7 = #{attr7,jdbcType=VARCHAR},
+        </if>
+        <if test="attr8 != null" >
+          attr8 = #{attr8,jdbcType=VARCHAR},
+        </if>
+        <if test="attr9 != null" >
+          attr9 = #{attr9,jdbcType=VARCHAR},
+        </if>
+        <if test="attr10 != null" >
+          attr10 = #{attr10,jdbcType=VARCHAR},
+        </if>
+        <if test="attr11 != null" >
+          attr11 = #{attr11,jdbcType=VARCHAR},
+        </if>
+        <if test="attr12 != null" >
+          attr12 = #{attr12,jdbcType=VARCHAR},
+        </if>
+        <if test="attr13 != null" >
+          attr13 = #{attr13,jdbcType=VARCHAR},
+        </if>
+        <if test="attr14 != null" >
+          attr14 = #{attr14,jdbcType=VARCHAR},
+        </if>
+        <if test="attr15 != null" >
+          attr15 = #{attr15,jdbcType=VARCHAR},
+        </if>
+        <if test="attr16 != null" >
+          attr16 = #{attr16,jdbcType=VARCHAR},
+        </if>
+        <if test="attr17 != null" >
+          attr17 = #{attr17,jdbcType=VARCHAR},
+        </if>
+        <if test="attr18 != null" >
+          attr18 = #{attr18,jdbcType=VARCHAR},
+        </if>
+        <if test="attr19 != null" >
+          attr19 = #{attr19,jdbcType=VARCHAR},
+        </if>
+        <if test="attr20 != null" >
+          attr20 = #{attr20,jdbcType=VARCHAR},
+        </if>
+      </set>
+      where sid = #{sid,jdbcType=CHAR}
+    </if>
+    <if test="count==0">
+      insert into sys_role_menu
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="sid != null" >
+          sid,
+        </if>
+        <if test="attr1 != null" >
+          attr1,
+        </if>
+        <if test="attr2 != null" >
+          attr2,
+        </if>
+        <if test="attr3 != null" >
+          attr3,
+        </if>
+        <if test="attr4 != null" >
+          attr4,
+        </if>
+        <if test="attr5 != null" >
+          attr5,
+        </if>
+        <if test="attr6 != null" >
+          attr6,
+        </if>
+        <if test="attr7 != null" >
+          attr7,
+        </if>
+        <if test="attr8 != null" >
+          attr8,
+        </if>
+        <if test="attr9 != null" >
+          attr9,
+        </if>
+        <if test="attr10 != null" >
+          attr10,
+        </if>
+        <if test="attr11 != null" >
+          attr11,
+        </if>
+        <if test="attr12 != null" >
+          attr12,
+        </if>
+        <if test="attr13 != null" >
+          attr13,
+        </if>
+        <if test="attr14 != null" >
+          attr14,
+        </if>
+        <if test="attr15 != null" >
+          attr15,
+        </if>
+        <if test="attr16 != null" >
+          attr16,
+        </if>
+        <if test="attr17 != null" >
+          attr17,
+        </if>
+        <if test="attr18 != null" >
+          attr18,
+        </if>
+        <if test="attr19 != null" >
+          attr19,
+        </if>
+        <if test="attr20 != null" >
+          attr20,
+        </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="sid != null" >
+          #{sid,jdbcType=CHAR},
+        </if>
+        <if test="attr1 != null" >
+          #{attr1,jdbcType=VARCHAR},
+        </if>
+        <if test="attr2 != null" >
+          #{attr2,jdbcType=VARCHAR},
+        </if>
+        <if test="attr3 != null" >
+          #{attr3,jdbcType=VARCHAR},
+        </if>
+        <if test="attr4 != null" >
+          #{attr4,jdbcType=VARCHAR},
+        </if>
+        <if test="attr5 != null" >
+          #{attr5,jdbcType=VARCHAR},
+        </if>
+        <if test="attr6 != null" >
+          #{attr6,jdbcType=VARCHAR},
+        </if>
+        <if test="attr7 != null" >
+          #{attr7,jdbcType=VARCHAR},
+        </if>
+        <if test="attr8 != null" >
+          #{attr8,jdbcType=VARCHAR},
+        </if>
+        <if test="attr9 != null" >
+          #{attr9,jdbcType=VARCHAR},
+        </if>
+        <if test="attr10 != null" >
+          #{attr10,jdbcType=VARCHAR},
+        </if>
+        <if test="attr11 != null" >
+          #{attr11,jdbcType=VARCHAR},
+        </if>
+        <if test="attr12 != null" >
+          #{attr12,jdbcType=VARCHAR},
+        </if>
+        <if test="attr13 != null" >
+          #{attr13,jdbcType=VARCHAR},
+        </if>
+        <if test="attr14 != null" >
+          #{attr14,jdbcType=VARCHAR},
+        </if>
+        <if test="attr15 != null" >
+          #{attr15,jdbcType=VARCHAR},
+        </if>
+        <if test="attr16 != null" >
+          #{attr16,jdbcType=VARCHAR},
+        </if>
+        <if test="attr17 != null" >
+          #{attr17,jdbcType=VARCHAR},
+        </if>
+        <if test="attr18 != null" >
+          #{attr18,jdbcType=VARCHAR},
+        </if>
+        <if test="attr19 != null" >
+          #{attr19,jdbcType=VARCHAR},
+        </if>
+        <if test="attr20 != null" >
+          #{attr20,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </if>
+  </insert>
   <select id="selectByOther" parameterType="java.util.Map" resultType="java.util.HashMap">
     select
     <include refid="Base_Column_List" />

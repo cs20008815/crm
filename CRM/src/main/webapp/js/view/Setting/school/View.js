@@ -133,7 +133,6 @@ define(['jquery', 'underscore', 'backbone'
                 });
             },
             delete: function(e){
-                console.log("d");
                 var _this = this;
                 var userModel = new Backbone.Model;
                 userModel.fetchEx({},{

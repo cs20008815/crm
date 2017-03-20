@@ -2,12 +2,14 @@ package org.clj.crmproj.controller;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.clj.crmproj.entity.SysDeptRole;
+import org.clj.crmproj.entity.SysRole;
 import org.clj.crmproj.entity.SysSchoolDept;
 import org.clj.crmproj.entity.SysUserSchool;
 import org.clj.crmproj.service.*;
 import org.clj.crmproj.util.EhcacheUtil;
 import org.clj.crmproj.util.Response;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +41,93 @@ public class RoleController {
     @Resource
     private DeptRoleService deptRoleService;
 
+    @Resource
+    private RoleService service;
+
+    @RequestMapping(value = "/query/{id}")
+    @ResponseBody
+    public Response query(@PathVariable(value = "id") String id) throws Exception{
+        Map reqMap = new HashMap();
+        reqMap.put("sid",id);
+        return new Response(service.queryByOther(reqMap));
+    }
+
+    @RequestMapping(value = "/queryPage")
+    @ResponseBody
+    public Response queryPage(@RequestBody Map requestMap) throws Exception{
+        Map resMap = new HashMap();
+        resMap.put("pageCount", service.queryCount(requestMap));
+        resMap.put("pageData", service.queryPage(requestMap));
+        return new Response(resMap);
+    }
+
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public Response add(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysRole addTable = new SysRole();
+        BeanUtils.populate(addTable, requestMap);
+        addTable.setAttr16(user.get("uid").toString());
+        addTable.setAttr17(new Date().toLocaleString());
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        addTable.setAttr20("1");
+        int i = service.addSelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("添加失败");
+        }
+    }
+
+    @RequestMapping(value = "/edit")
+    @ResponseBody
+    public Response edit(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysRole addTable = new SysRole();
+        BeanUtils.populate(addTable, requestMap);
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        int i = service.editByPrimaryKeySelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("修改失败");
+        }
+    }
+
+    @RequestMapping(value = "/remove/{id}")
+    @ResponseBody
+    public Response remove(@PathVariable(value = "id") String id){
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysRole addTable = new SysRole();
+        addTable.setSid(id);
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        addTable.setAttr20("0");
+        int i = service.editByPrimaryKeySelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("删除失败");
+        }
+    }
+
     @RequestMapping(value = "/queryRoleList")
     @ResponseBody
     public Response queryRoleList(@RequestBody Map requestMap) throws Exception{
@@ -61,7 +150,7 @@ public class RoleController {
                 for(Map role : roles){
                     role.put("name", role.get("attr1"));
                     role.put("id", role.get("sid"));
-                    role.put("children", new ArrayList<>());
+                    role.put("children", new ArrayList<Map>());
                 }
                 dept.put("children", roles);
             }
@@ -89,7 +178,6 @@ public class RoleController {
         userSchoolMap.put("attr1",reqUser.get("uid"));
         List<Map> userSchools = userSchoolService.queryByOther(userSchoolMap);
         if(userSchools.size() > 0){
-            System.out.println("userSchools:------" + userSchools.toString());
             SysUserSchool sysUserSchool = new SysUserSchool();
             BeanUtils.populate(sysUserSchool, userSchools.get(0));
             sysUserSchool.setAttr1(reqUser.get("uid").toString());
@@ -113,7 +201,6 @@ public class RoleController {
         schoolDeptMap.put("attr3", reqUser.get("uid"));
         List<Map> schoolDepts = schoolDeptService.queryByOther(schoolDeptMap);
         if(schoolDepts.size() > 0){
-            System.out.println("schoolDepts:------" + schoolDepts.toString());
             SysSchoolDept sysSchoolDept = new SysSchoolDept();
             BeanUtils.populate(sysSchoolDept, schoolDepts.get(0));
             sysSchoolDept.setAttr1(reqSchool.get("sid").toString());
@@ -139,14 +226,14 @@ public class RoleController {
         deptRoleMap.put("attr3", reqUser.get("uid"));
         List<Map> deptRoles = deptRoleService.queryByOther(deptRoleMap);
         if(deptRoles.size() > 0){
-            System.out.println("deptRoles:------" + deptRoles.toString());
             SysDeptRole sysDeptRole = new SysDeptRole();
-            BeanUtils.populate(sysDeptRole, schoolDepts.get(0));
+            BeanUtils.populate(sysDeptRole, deptRoles.get(0));
             sysDeptRole.setAttr1(reqDept.get("sid").toString());
             sysDeptRole.setAttr2(reqRole.get("sid").toString());
             sysDeptRole.setAttr3(reqUser.get("uid").toString());
             sysDeptRole.setAttr18(user.get("uid").toString());
             sysDeptRole.setAttr19(new Date().toLocaleString());
+
             deptRoleService.editByPrimaryKeySelective(sysDeptRole);
         }else{
             deptRoleMap.put("attr1", reqDept.get("sid"));

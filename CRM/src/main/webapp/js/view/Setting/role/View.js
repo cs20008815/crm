@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'backbone'
         , Add
         , Edit
     ) {
-        SchoolView = Backbone.View.extend({
+        View = Backbone.View.extend({
             templates: {
                 "View": _.template(View),
                 "List": _.template(List)
@@ -68,7 +68,6 @@ define(['jquery', 'underscore', 'backbone'
                     url : 'api/role/queryPage',
                     success: function (data) {
                         var entity = data.get("output");
-                        console.log(JSON.stringify(entity));
                         this.$("#tbody").html(_this.templates.List(entity.pageData));
                         var totalNum = entity.pageCount;  //总页数
                         var pageView = new PageView({
@@ -137,7 +136,7 @@ define(['jquery', 'underscore', 'backbone'
                 var _this = this;
                 var model = new Backbone.Model;
                 model.fetchEx({},{
-                    url : 'api/dept/remove/'+$(e.currentTarget).attr("sid"),
+                    url : 'api/role/remove/'+$(e.currentTarget).attr("sid"),
                     success: function (data) {
                         if(data && data.get("status") == "S"){
                             iziNotyf.confirm("删除成功");
@@ -149,5 +148,5 @@ define(['jquery', 'underscore', 'backbone'
                 });
             }
         });
-        return SchoolView;
+        return View;
     });

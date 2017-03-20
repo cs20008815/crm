@@ -59,4 +59,14 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
     public List<Map> queryByOther(Map record) {
         return sysRoleMapper.selectByOther(record);
     }
+
+    @Override
+    public List<Map> queryPage(Map record) {
+        return sysRoleMapper.selectPage(record);
+    }
+
+    @Override
+    public int queryCount(Map map){
+        return sysRoleMapper.selectCount(map);
+    }
 }

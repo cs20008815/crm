@@ -59,4 +59,9 @@ public class RoleMenuServiceImpl extends BaseServiceImpl implements RoleMenuServ
     public List<Map> queryByOther(Map record) {
         return sysRoleMenuMapper.selectByOther(record);
     }
+
+    @Override
+    public int addOrEdit(SysRoleMenu record){
+        return sysRoleMenuMapper.insertOrUpdate(record);
+    }
 }

@@ -19,4 +19,8 @@ public interface SysRoleMapper extends BaseMapper<SysRole, String>  {
     Integer updateByPrimaryKey(SysRole record);
 
     List<Map> selectByOther(Map map);
+
+    int selectCount(Map map);
+
+    List<Map> selectPage(Map map);
 }

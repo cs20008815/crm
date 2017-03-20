@@ -4,10 +4,14 @@
 define(['jquery', 'underscore', 'backbone'
     , 'view/Login/LoginView'
     , 'view/Main/MainView'
-    , 'view/Setting/QXSettingView'
+    , 'view/Setting/role/QXSettingView'
     , 'view/Setting/school/View'
     , 'view/Setting/dept/View'
     , 'view/Setting/role/View'
+    , 'view/Setting/menu/View'
+    , 'view/Guest/View'
+    , 'view/GuestFP/View'
+    , 'view/MyGuest/View'
 ], function ($, _, Backbone
     , LoginView
     , MainView
@@ -15,6 +19,10 @@ define(['jquery', 'underscore', 'backbone'
     , SchoolView
     , DeptView
     , RoleView
+    , MenuView
+    , GuestView
+    , GuestFPView
+    , MyGuestView
 ) {
     var AppRouter = Backbone.Router.extend({
         routes: {
@@ -23,11 +31,16 @@ define(['jquery', 'underscore', 'backbone'
             "quanxianSetting":"quanxianSetting",
             "zhongxinSetting":"zhongxinSetting",
             "bumenSetting":"bumenSetting",
-            "zhiweiSetting":"zhiweiSetting"
+            "zhiweiSetting":"zhiweiSetting",
+            "caidanSetting":"caidanSetting",
+            "kehuchaxun":"guest",
+            "khfp":"guestFP",
+            "wdkh":"myguest"
 
         },
         home: function(){
             var view = new MainView();
+            $("#rightdiv").html(view.$el);
         },
         quanxianSetting:function(){
             var view = new QXSettingView();
@@ -43,6 +56,22 @@ define(['jquery', 'underscore', 'backbone'
         },
         zhiweiSetting:function(){
             var view = new RoleView();
+            $("#rightdiv").html(view.$el);
+        },
+        caidanSetting:function(){
+            var view = new MenuView();
+            $("#rightdiv").html(view.$el);
+        },
+        guest:function(){
+            var view = new GuestView();
+            $("#rightdiv").html(view.$el);
+        },
+        guestFP:function(){
+            var view = new GuestFPView();
+            $("#rightdiv").html(view.$el);
+        },
+        myguest:function(){
+            var view = new MyGuestView();
             $("#rightdiv").html(view.$el);
         }
     });

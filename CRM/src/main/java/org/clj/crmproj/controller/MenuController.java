@@ -1,5 +1,7 @@
 package org.clj.crmproj.controller;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.clj.crmproj.entity.SysMenu;
 import org.clj.crmproj.entity.SysMenuLink;
 import org.clj.crmproj.entity.SysRoleMenu;
 import org.clj.crmproj.service.*;
@@ -24,6 +26,9 @@ public class MenuController {
     private MenuService menuService;
 
     @Resource
+    private MenuService service;
+
+    @Resource
     private MenuOptService menuOptService;
 
     @Resource
@@ -31,6 +36,90 @@ public class MenuController {
 
     @Resource
     private RoleMenuService roleMenuService;
+
+    @RequestMapping(value = "/query/{id}")
+    @ResponseBody
+    public Response query(@PathVariable(value = "id") String id) throws Exception{
+        Map reqMap = new HashMap();
+        reqMap.put("sid",id);
+        return new Response(service.queryByOther(reqMap));
+    }
+
+    @RequestMapping(value = "/queryPage")
+    @ResponseBody
+    public Response queryPage(@RequestBody Map requestMap) throws Exception{
+        Map resMap = new HashMap();
+        resMap.put("pageCount", service.queryCount(requestMap));
+        resMap.put("pageData", service.queryByOther(requestMap));
+        return new Response(resMap);
+    }
+
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public Response add(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysMenu addTable = new SysMenu();
+        BeanUtils.populate(addTable, requestMap);
+        addTable.setAttr16(user.get("uid").toString());
+        addTable.setAttr17(new Date().toLocaleString());
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        addTable.setAttr20("1");
+        int i = service.addSelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("添加失败");
+        }
+    }
+
+    @RequestMapping(value = "/edit")
+    @ResponseBody
+    public Response edit(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysMenu addTable = new SysMenu();
+        BeanUtils.populate(addTable, requestMap);
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        int i = service.editByPrimaryKeySelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("修改失败");
+        }
+    }
+
+    @RequestMapping(value = "/remove/{id}")
+    @ResponseBody
+    public Response remove(@PathVariable(value = "id") String id){
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        SysMenu addTable = new SysMenu();
+        addTable.setSid(id);
+        addTable.setAttr18(user.get("uid").toString());
+        addTable.setAttr19(new Date().toLocaleString());
+        addTable.setAttr20("0");
+        int i = service.editByPrimaryKeySelective(addTable);
+        if(i > 0){
+            return new Response();
+        }else{
+            return new Response("删除失败");
+        }
+    }
 
     @RequestMapping(value = "")
     @ResponseBody
@@ -61,16 +150,19 @@ public class MenuController {
         map.put("attr15", "0");
         List<Map> menus = menuService.queryByOther(map);
         for(Map menu : menus){
+            System.out.println("menu:------------------->" + menu.toString());
             menu.put("name", menu.get("attr1"));
             menu.put("id", menu.get("sid"));
-            map.put("attr15", menu.get("sid"));
-            List<Map> menuChildrens = menuService.queryByOther(map);
+            Map childrenMap = new HashMap();
+            childrenMap.put("attr15", menu.get("sid"));
+            List<Map> menuChildrens = menuService.queryByOther(childrenMap);
             for(Map menuChildren : menuChildrens){
+                System.out.println("menuChildren:------------------->" + menuChildren.toString());
                 menuChildren.put("name", menuChildren.get("attr1"));
                 menuChildren.put("id", menuChildren.get("sid"));
-                map.clear();
-                map.put("attr2",menuChildren.get("sid"));
-                List<Map> menuOpts = menuOptService.queryByOther(map);
+                Map childrenMap2 = new HashMap();
+                childrenMap2.put("attr2",menuChildren.get("sid"));
+                List<Map> menuOpts = menuOptService.queryByOther(childrenMap2);
                 for(Map menuOpt : menuOpts){
                     menuOpt.put("name", menuOpt.get("attr1"));
                     menuOpt.put("id", menuOpt.get("sid"));
@@ -93,14 +185,16 @@ public class MenuController {
         List<Map> menus = menuService.queryMenuBySid(map);
         for(Map menu : menus){
             superMenus.add(menu);
-            map.put("attr15", menu.get("sid"));
-            List<Map> menuChildrens = menuService.queryMenuBySid(map);
+            Map map1 = new HashMap();
+            map1.put("attr1", id);
+            map1.put("attr15", menu.get("sid"));
+            List<Map> menuChildrens = menuService.queryMenuBySid(map1);
             for(Map menuChildren : menuChildrens){
                 superMenus.add(menuChildren);
-                map.clear();
-                map.put("attr1", menuChildren.get("sid"));
-                map.put("attr3", id);
-                List<Map> menuLints = menuLinkService.queryByOther(map);
+                Map map2 = new HashMap();
+                map2.put("attr1", menuChildren.get("sid"));
+                map2.put("attr3", id);
+                List<Map> menuLints = menuLinkService.queryByOther(map2);
                 for(Map menuOpt : menuLints){
                     Map menuMap = new HashMap();
                     menuMap.put("sid", menuOpt.get("attr2"));
@@ -124,51 +218,51 @@ public class MenuController {
         }
         Map user = (Map)o;
 
-        Map map = new HashMap();
-        map.put("attr1", id);
-        List<Map> roleMenus = roleMenuService.queryByOther(map);
-        for(Map roleMenu : roleMenus){
-            SysRoleMenu sysRoleMenu = new SysRoleMenu();
-            sysRoleMenu.setSid(roleMenu.get("sid").toString());
-            sysRoleMenu.setAttr20("0");
-
-            Map menuLinkMap = new HashMap();
-            menuLinkMap.put("attr1", roleMenu.get("attr2").toString());
-            menuLinkMap.put("attr3", id);
-            List<Map> menuLinks = menuLinkService.queryByOther(menuLinkMap);
-            for(Map menuLink : menuLinks){
-                SysMenuLink sysMenuLink = new SysMenuLink();
-                sysMenuLink.setSid(menuLink.get("sid").toString());
-                sysMenuLink.setAttr20("0");
-                menuLinkService.editByPrimaryKeySelective(sysMenuLink);
-            }
-            roleMenuService.editByPrimaryKeySelective(sysRoleMenu);
-        }
-
         if(null != requestMap.get("menus")){
             List<Map> menus = (List<Map>) requestMap.get("menus");
             for(Map menu : menus){
                 if(!menu.get("level").equals(2)){
-                    SysRoleMenu sysRoleMenu = new SysRoleMenu();
-                    sysRoleMenu.setAttr1(id);
-                    sysRoleMenu.setAttr2(menu.get("sid").toString());
-                    sysRoleMenu.setAttr16(user.get("uid").toString());
-                    sysRoleMenu.setAttr17(new Date().toLocaleString());
-                    sysRoleMenu.setAttr18(user.get("uid").toString());
-                    sysRoleMenu.setAttr19(new Date().toLocaleString());
-                    sysRoleMenu.setAttr20("1");
-                    roleMenuService.addSelective(sysRoleMenu);
-                }else{
-                    SysMenuLink sysMenuLink = new SysMenuLink();
-                    sysMenuLink.setAttr1(menu.get("attr2").toString());
-                    sysMenuLink.setAttr2(menu.get("sid").toString());
-                    sysMenuLink.setAttr3(id);
-                    sysMenuLink.setAttr16(user.get("uid").toString());
-                    sysMenuLink.setAttr17(new Date().toLocaleString());
-                    sysMenuLink.setAttr18(user.get("uid").toString());
-                    sysMenuLink.setAttr19(new Date().toLocaleString());
-                    sysMenuLink.setAttr20("1");
-                    menuLinkService.addSelective(sysMenuLink);
+                    List<Map> rolemenus = roleMenuService.queryByOther(menu);
+                    if(rolemenus.size() > 0){
+                        SysRoleMenu sysRoleMenu = new SysRoleMenu();
+                        BeanUtils.populate(sysRoleMenu, rolemenus.get(0));
+                        BeanUtils.populate(sysRoleMenu, menu);
+                        sysRoleMenu.setAttr18(user.get("uid").toString());
+                        sysRoleMenu.setAttr19(new Date().toLocaleString());
+                        roleMenuService.editByPrimaryKeySelective(sysRoleMenu);
+                    }else{
+                        SysRoleMenu sysRoleMenu = new SysRoleMenu();
+                        BeanUtils.populate(sysRoleMenu, menu);
+                        sysRoleMenu.setAttr16(user.get("uid").toString());
+                        sysRoleMenu.setAttr17(new Date().toLocaleString());
+                        sysRoleMenu.setAttr18(user.get("uid").toString());
+                        sysRoleMenu.setAttr19(new Date().toLocaleString());
+                        roleMenuService.addSelective(sysRoleMenu);
+                    }
+                } else{
+                    System.out.println(menu.toString());
+                    Map menuLink = new HashMap();
+                    menuLink.put("attr1",menu.get("menu2"));
+                    menuLink.put("attr2",menu.get("attr2"));
+                    menuLink.put("attr3", menu.get("attr1"));
+                    menuLink.put("attr20", menu.get("attr20"));
+                    List<Map> menuLinks = menuLinkService.queryByOther(menuLink);
+                    if(menuLinks.size() > 0){
+                        SysMenuLink sysMenuLink = new SysMenuLink();
+                        BeanUtils.populate(sysMenuLink, menuLinks.get(0));
+                        BeanUtils.populate(sysMenuLink, menuLink);
+                        sysMenuLink.setAttr18(user.get("uid").toString());
+                        sysMenuLink.setAttr19(new Date().toLocaleString());
+                        menuLinkService.editByPrimaryKeySelective(sysMenuLink);
+                    }else{
+                        SysMenuLink sysMenuLink = new SysMenuLink();
+                        BeanUtils.populate(sysMenuLink, menuLink);
+                        sysMenuLink.setAttr16(user.get("uid").toString());
+                        sysMenuLink.setAttr17(new Date().toLocaleString());
+                        sysMenuLink.setAttr18(user.get("uid").toString());
+                        sysMenuLink.setAttr19(new Date().toLocaleString());
+                        menuLinkService.addSelective(sysMenuLink);
+                    }
                 }
             }
         }

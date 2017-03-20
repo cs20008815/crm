@@ -19,4 +19,6 @@ public interface SysRoleMenuMapper extends BaseMapper<SysRoleMenu, String>  {
     Integer updateByPrimaryKey(SysRoleMenu record);
 
     List<Map> selectByOther(Map map);
+
+    Integer insertOrUpdate(SysRoleMenu record);
 }

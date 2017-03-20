@@ -44,4 +44,17 @@ public class UserController {
 
         return new Response(user);
     }
+
+    @RequestMapping(value = "/query")
+    @ResponseBody
+    public Response query(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+        System.out.println(user.toString());
+
+        return new Response(userService.queryByOther(requestMap));
+    }
 }

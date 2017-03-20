@@ -16,4 +16,6 @@ public interface RoleService extends BaseService {
     int editByPrimaryKeySelective(SysRole record);
     int editByPrimaryKey(SysRole record);
     List<Map> queryByOther(Map record);
+    int queryCount(Map map);
+    List<Map> queryPage(Map record);
 }

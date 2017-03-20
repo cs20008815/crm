@@ -19,7 +19,9 @@ require.config({
         autocheckcomplete:'libs/autocheck/autocheckcomplete',
         autocheck:'libs/autocheck/autocheck',
         autoselectcomplete:'libs/autoselect/autoselectcomplete',
-        autoselect:'libs/autoselect/autoselect'
+        autoselect:'libs/autoselect/autoselect',
+        laydate:'libs/laydate/laydate',
+        echarts :'libs/echarts/echarts.min'
 
     },
     shim : {
@@ -79,18 +81,6 @@ require.config({
             ],
             exports: 'iziNotyf'
         },
-        autocheckcomplete:{
-            deps: [
-                'jqueryui'
-            ],
-            exports: 'autocheckcomplete'
-        },
-        autocheck:{
-            deps: [
-                'autocheckcomplete'
-            ],
-            exports: 'autocheck'
-        },
         autoselectcomplete:{
             deps: [
                 'jqueryui'
@@ -103,6 +93,24 @@ require.config({
             ],
             exports: 'autoselect'
         },
+        autocheckcomplete:{
+            deps: [
+                'jqueryui'
+            ],
+            exports: 'autocheckcomplete'
+        },
+        autocheck:{
+            deps: [
+                'autocheckcomplete'
+            ],
+            exports: 'autoselect'
+        },
+        laydate: {
+            exports: 'laydate'
+        },
+        echarts: {
+            exports: 'echarts'
+        }
     }
 });
 var isLoginTimeOutDealing = false;
@@ -125,7 +133,7 @@ require(['router','jquery', 'underscore', 'backbone', 'iziToast', 'iziNotyf', 'v
                         return;
                     }
 
-                    window.location.href="/";
+                    window.location.href = "/crm/";
                 }
             }
         });

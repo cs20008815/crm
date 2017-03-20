@@ -2,7 +2,7 @@
  * Created by Administrator on 2017/3/1.
  */
 define(['jquery', 'underscore', 'backbone', 'iziToast', 'autoselect'
-        , 'text!templates/Setting/dept/add.html'
+        , 'text!templates/Setting/role/add.html'
     ],
     function ($, _, Backbone, iziToast, autoselect
         , addTemplate
@@ -20,11 +20,11 @@ define(['jquery', 'underscore', 'backbone', 'iziToast', 'autoselect'
             render: function () {
                 this.$el.html(this.templates.addTemplate());
 
-                this.$("#schoolName").autoselect({
-                    source:"api/school/querySchool",
+                this.$("#deptName").autoselect({
+                    source:"api/dept/queryDept",
                     searchParam:"attr1",
-                    label:["attr1"],
-                    id:"sid"
+                    label:["schoolName","deptName"],
+                    id:"deptId"
                 });
             },
             events: {
@@ -34,13 +34,13 @@ define(['jquery', 'underscore', 'backbone', 'iziToast', 'autoselect'
             save: function(){
                 var _this = this;
                 var opt = {
-                    attr1:this.$("#deptName").val(),
-                    attr2:this.$("#schoolName").attr("inputid")
+                    attr1:this.$("#roleName").val(),
+                    attr2:this.$("#deptName").attr("inputid")
                 }
 
                 var model = new Backbone.Model;
                 model.fetchEx(opt,{
-                    url : 'api/dept/add',
+                    url : 'api/role/add',
                     success: function (data) {
                         if(data && data.get("status") == "S"){
                             _this.option.callback();

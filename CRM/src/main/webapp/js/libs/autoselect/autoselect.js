@@ -1,14 +1,14 @@
-;(function($){
+(function($){
 	$.fn.autoselect = function(opts){
 		var defaults = {
-				source:"",
-				label:null,
-				value:null,
-				id:"id",
-				searchParam:"",
-				top:50,
-				FormData:{},
-				searchCallBack:""
+			source:"",
+			label:null,
+			value:null,
+			id:"id",
+			searchParam:"",
+			top:50,
+			FormData:{},
+			searchCallBack:""
 		};
 		var option = $.extend(defaults,opts);
 		this.searchCallBack = null;
@@ -23,7 +23,7 @@
 					var term = request.term;
 					var dataStr = $.extend({},option.FormData);
 					dataStr["top"] = option.top;
-					
+
 					if(term==null || term == ""){
 						dataStr[option.searchParam]="";
 					}else{
@@ -63,13 +63,13 @@
 										"value":valueArray.join(" ")
 									}
 								});
-								response( normData );
+								response(normData);
 							}
-							
-							
-							
+
+
+
 						}
-						
+
 					})
 				},
 				select:function(event, ui){
@@ -87,6 +87,6 @@
 				}
 			});
 		});
-		
+
 	}
-})(jQuery)
+})(jQuery);

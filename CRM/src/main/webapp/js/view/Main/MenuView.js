@@ -25,7 +25,6 @@ define(
                         if(data.status == "S"){
                             _this.$el.html(_this.templates.menuTemplate(data.output));
                             $("#leftmenu").html(_this.$el);
-                            console.log(_this.$el.find("[name=menuli]"));
                             _this.$el.find("[name=menuli]").click(_this.clickMenuNew);//点击展开收起
                         }else{
 
@@ -41,7 +40,6 @@ define(
             },
             clickMenuNew: function (e) {
                 var obj = $(e.currentTarget);
-                console.log(obj);
                 var ulObj = obj.next("ul");
                 var isAct = obj.hasClass("inactives");
 

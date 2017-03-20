@@ -34,6 +34,12 @@ public class DeptController {
         return new Response(service.queryByOther(reqMap));
     }
 
+    @RequestMapping(value = "/queryDept")
+    @ResponseBody
+    public Response queryDept(@RequestBody Map requestMap) throws Exception{
+        return new Response(service.queryPage(requestMap));
+    }
+
     @RequestMapping(value = "/queryPage")
     @ResponseBody
     public Response queryPage(@RequestBody Map requestMap) throws Exception{

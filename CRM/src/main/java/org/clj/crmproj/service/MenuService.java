@@ -18,4 +18,5 @@ public interface MenuService extends BaseService {
     List<Map> queryByOther(Map record);
     List<Map> userMenu(Map map);
     List<Map> queryMenuBySid(Map map);
+    int queryCount(Map map);
 }

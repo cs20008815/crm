@@ -59,4 +59,22 @@ public class GuestServiceImpl extends BaseServiceImpl implements GuestService {
     public List<Map> queryByOther(Map record) {
         return sysGuestMapper.selectByOther(record);
     }
+
+    public List<Map> queryPage(Map record) {
+        return sysGuestMapper.selectPage(record);
+    }
+
+    public List<Map> queryPageByMk(Map record) {
+        return sysGuestMapper.selectPageByMk(record);
+    }
+
+    @Override
+     public int queryCount(Map map){
+        return sysGuestMapper.selectCount(map);
+    }
+
+    @Override
+    public int addBatch(List<SysGuest> record){
+        return sysGuestMapper.insertBatch(record);
+    }
 }

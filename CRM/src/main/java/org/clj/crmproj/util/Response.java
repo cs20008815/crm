@@ -6,20 +6,20 @@ package org.clj.crmproj.util;
 public class Response {
 
     private String status = "S";
-    private String errorMessage;
+    private String message;
     private Object output;
 
     public Response() {
     }
 
-    public Response(String errorMessage) {
+    public Response(String message) {
         this.setStatus("E");
-        this.setErrorMessage(errorMessage);
+        this.setMessage(message);
     }
 
-    public Response(String status, String errorMessage) {
+    public Response(String status, String message) {
         this.setStatus(status);
-        this.setErrorMessage(errorMessage);
+        this.setMessage(message);
     }
 
     public Response(Object output) {
@@ -34,12 +34,12 @@ public class Response {
         this.status = status;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Object getOutput() {

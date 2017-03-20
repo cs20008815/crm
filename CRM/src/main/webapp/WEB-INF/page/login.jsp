@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="zh">
-<base href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/">
+    <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"";
+    %>
+<base href=<%=basePath%>/>
 <head>
     <meta content="webkit" name="renderer"/>
     <meta charset="UTF-8">
@@ -50,7 +54,7 @@
             data:opt,
             success: function(data){
                 if(data.isSucc == "true"){
-                    window.location.href = "/index";
+                    window.location.href = "<%=basePath%>/index";
                 }else{
                     $("#loginMsg").html(data.msg);
                 }

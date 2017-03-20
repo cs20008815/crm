@@ -32,7 +32,7 @@
     <![CDATA[
     select
     COUNT(*)
-    from sys_dept
+    from sys_role
     where attr20 = '1'
     ]]>
     <if test="sid != null">
@@ -97,75 +97,77 @@
     </if>
   </select>
   <select id="selectPage" parameterType="java.util.Map" resultType="java.util.HashMap">
-    select sys_dept.sid deptId, sys_dept.attr1 deptName, sys_dept.attr17 deptCreateDate,
-    sys_dept.attr19 deptLastDate,
+    select sys_role.sid roleId, sys_role.attr1 roleName, sys_role.attr17 deptCreateDate, sys_role.attr19 deptLastDate,
+    sys_dept.sid deptId, sys_dept.attr1 deptName,
     sys_school.sid schoolId, sys_school.attr1 schoolName
-    from sys_dept
-    LEFT JOIN sys_school on sys_dept.attr2 = sys_school.sid and sys_school.attr20 = 1
-    where sys_dept.attr20 = 1
+    from sys_role
+    LEFT JOIN sys_dept on sys_dept.attr20 = 1 and sys_dept.sid = sys_role.attr2
+    LEFT JOIN sys_school on sys_school.attr20 = 1 and sys_school.sid = sys_dept.attr2
+    where sys_role.attr20 = 1
     <if test="sid != null">
-      and sys_dept.sid = #{sid,jdbcType=CHAR}
+      and sys_role.sid = #{sid,jdbcType=CHAR}
     </if>
     <if test="attr1 != null">
-      and (sys_dept.attr1 LIKE CONCAT('%',#{attr1},'%')
+      and (sys_role.attr1 LIKE CONCAT('%',#{attr1},'%')
+      or sys_dept.attr1 LIKE CONCAT('%',#{attr1},'%')
       or sys_school.attr1 LIKE CONCAT('%',#{attr1},'%'))
     </if>
     <if test="attr2 != null">
-      and sys_dept.attr2 = #{attr2,jdbcType=VARCHAR}
+      and sys_role.attr2 = #{attr2,jdbcType=VARCHAR}
     </if>
     <if test="attr3 != null">
-      and sys_dept.attr3 = #{attr3,jdbcType=VARCHAR}
+      and sys_role.attr3 = #{attr3,jdbcType=VARCHAR}
     </if>
     <if test="attr4 != null">
-      and sys_dept.attr4 = #{attr4,jdbcType=VARCHAR}
+      and sys_role.attr4 = #{attr4,jdbcType=VARCHAR}
     </if>
     <if test="attr5 != null">
-      and sys_dept.attr5 = #{attr5,jdbcType=VARCHAR}
+      and sys_role.attr5 = #{attr5,jdbcType=VARCHAR}
     </if>
     <if test="attr6 != null">
-      and sys_dept.attr6 = #{attr6,jdbcType=VARCHAR}
+      and sys_role.attr6 = #{attr6,jdbcType=VARCHAR}
     </if>
     <if test="attr7 != null">
-      and sys_dept.attr7 = #{attr7,jdbcType=VARCHAR}
+      and sys_role.attr7 = #{attr7,jdbcType=VARCHAR}
     </if>
     <if test="attr8 != null">
-      and sys_dept.attr8 = #{attr8,jdbcType=VARCHAR}
+      and sys_role.attr8 = #{attr8,jdbcType=VARCHAR}
     </if>
     <if test="attr9 != null">
-      and sys_dept.attr9 = #{attr9,jdbcType=VARCHAR}
+      and sys_role.attr9 = #{attr9,jdbcType=VARCHAR}
     </if>
     <if test="attr10 != null">
-      and sys_dept.attr10 = #{attr10,jdbcType=VARCHAR}
+      and sys_role.attr10 = #{attr10,jdbcType=VARCHAR}
     </if>
     <if test="attr11 != null">
-      and sys_dept.attr11 = #{attr11,jdbcType=VARCHAR}
+      and sys_role.attr11 = #{attr11,jdbcType=VARCHAR}
     </if>
     <if test="attr12 != null">
-      and sys_dept.attr12 = #{attr12,jdbcType=VARCHAR}
+      and sys_role.attr12 = #{attr12,jdbcType=VARCHAR}
     </if>
     <if test="attr13 != null">
-      and sys_dept.attr13 = #{attr13,jdbcType=VARCHAR}
+      and sys_role.attr13 = #{attr13,jdbcType=VARCHAR}
     </if>
     <if test="attr14 != null">
-      and sys_dept.attr14 = #{attr14,jdbcType=VARCHAR}
+      and sys_role.attr14 = #{attr14,jdbcType=VARCHAR}
     </if>
     <if test="attr15 != null">
-      and sys_dept.attr15 = #{attr15,jdbcType=VARCHAR}
+      and sys_role.attr15 = #{attr15,jdbcType=VARCHAR}
     </if>
     <if test="attr16 != null">
-      and sys_dept.attr16 = #{attr16,jdbcType=VARCHAR}
+      and sys_role.attr16 = #{attr16,jdbcType=VARCHAR}
     </if>
     <if test="attr17 != null">
-      and sys_dept.attr17 = #{attr17,jdbcType=VARCHAR}
+      and sys_role.attr17 = #{attr17,jdbcType=VARCHAR}
     </if>
     <if test="attr18 != null">
-      and sys_dept.attr18 = #{attr18,jdbcType=VARCHAR}
+      and sys_role.attr18 = #{attr18,jdbcType=VARCHAR}
     </if>
     <if test="attr19 != null">
-      and sys_dept.attr19 = #{attr19,jdbcType=VARCHAR}
+      and sys_role.attr19 = #{attr19,jdbcType=VARCHAR}
     </if>
     ORDER BY
-    sys_dept.attr2 DESC, sys_dept.attr19 DESC
+    sys_school.attr1 DESC, sys_dept.attr1 DESC
     <if test="pageStart != null and pageSize != null">
       limit #{pageStart,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
     </if>

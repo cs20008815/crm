@@ -17,6 +17,17 @@ define(
                 var _this = this;
                 _this.$el.html(_this.templates.headTemplate());
                 $("#header").html(_this.$el);
+
+                var userModel = new Backbone.Model;
+                userModel.fetchEx({},{
+                    url : 'api/login/getNowUser',
+                    success: function (data) {
+                        var entity = data.get("output");
+                        $("#username").html(entity.userName);
+                        $("#userrole").html(entity.deptName);
+                        console.log(data);
+                    }
+                });
             },
             events: {
                 "click div[name=xial]":"SignOut",

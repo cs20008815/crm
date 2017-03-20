@@ -20,5 +20,5 @@ public interface SysSchoolMapper extends BaseMapper<SysSchool, String>  {
 
     List<Map> selectByOther(Map map);
 
-    int selectCount(Map map);
+    Integer selectCount(Map map);
 }

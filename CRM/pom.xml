@@ -213,6 +213,18 @@
       <artifactId>shiro-spring</artifactId>
       <version>${apache.shiro.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.11-beta1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.11-beta1</version>
+    </dependency>
   </dependencies>
 
   <build>

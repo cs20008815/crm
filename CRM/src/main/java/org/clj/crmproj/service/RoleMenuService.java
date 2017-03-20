@@ -16,4 +16,5 @@ public interface RoleMenuService extends BaseService {
     int editByPrimaryKeySelective(SysRoleMenu record);
     int editByPrimaryKey(SysRoleMenu record);
     List<Map> queryByOther(Map record);
+    int addOrEdit(SysRoleMenu record);
 }

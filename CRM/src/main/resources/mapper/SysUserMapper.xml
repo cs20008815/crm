@@ -37,7 +37,7 @@
       and sid = #{sid,jdbcType=CHAR}
     </if>
     <if test="attr1 != null">
-      and attr1 = #{attr1,jdbcType=VARCHAR}
+      and attr1 LIKE CONCAT('%',#{attr1},'%')
     </if>
     <if test="attr2 != null">
       and attr2 = #{attr2,jdbcType=VARCHAR}

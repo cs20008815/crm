@@ -5,12 +5,12 @@
  * Created by Administrator on 2017/3/1.
  */
 define(['jquery', 'underscore', 'backbone', 'iziToast'
-        , 'text!templates/Setting/dept/edit.html'
+        , 'text!templates/Setting/role/edit.html'
     ],
     function ($, _, Backbone, iziToast
         , edit
     ) {
-        Add = Backbone.View.extend({
+        Edit = Backbone.View.extend({
             templates: {
                 "edit": _.template(edit)
             },
@@ -24,30 +24,29 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                 var _this = this;
                 this.$el.html(this.templates.edit());
 
-                this.$("#schoolName").autoselect({
-                    source:"api/school/querySchool",
+                this.$("#deptName").autoselect({
+                    source:"api/dept/queryDept",
                     searchParam:"attr1",
-                    label:["attr1"],
-                    id:"sid"
+                    label:["schoolName","deptName"],
+                    id:"deptId"
                 });
 
                 var model = new Backbone.Model;
                 model.fetchEx({},{
-                    url : 'api/dept/query/'+this.option.id,
+                    url : 'api/role/query/'+this.option.id,
                     success: function (data) {
                         if(data && data.get("status") == "S"){
                             var entity = data.get("output");
-                            _this.$("#deptName").val(entity[0].attr1);
+                            _this.$("#roleName").val(entity[0].attr1);
 
                             var schoolModel = new Backbone.Model;
-                            schoolModel.fetchEx({},{
-                                url : 'api/school/query/'+entity[0].attr2,
+                            schoolModel.fetchEx({sid:entity[0].attr2},{
+                                url : 'api/dept/queryDept',
                                 success: function (data) {
                                     if(data && data.get("status") == "S"){
                                         var entity = data.get("output");
-                                        _this.$("#schoolName").attr("inputid",entity[0].sid);
-                                        _this.$("#schoolName").val(entity[0].attr1);
-                                        console.log(entity[0].attr1);
+                                        _this.$("#deptName").attr("inputid",entity[0].deptId);
+                                        _this.$("#deptName").val(entity[0].schoolName + " " +entity[0].deptName);
                                     }else{
                                         iziNotyf.alert("查询失败");
                                     }
@@ -68,13 +67,13 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                 var _this = this;
                 var opt = {
                     sid:this.option.id,
-                    attr1:this.$("#deptName").val(),
-                    attr2:this.$("#schoolName").attr("inputid")
+                    attr1:this.$("#roleName").val(),
+                    attr2:this.$("#deptName").attr("inputid")
                 }
 
                 var userModel = new Backbone.Model;
                 userModel.fetchEx(opt,{
-                    url : 'api/dept/edit',
+                    url : 'api/role/edit',
                     success: function (data) {
                         if(data && data.get("status") == "S"){
                             _this.option.callback();
@@ -90,5 +89,5 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                 this.layer.cancleView();
             }
         });
-        return Add;
+        return Edit;
     });

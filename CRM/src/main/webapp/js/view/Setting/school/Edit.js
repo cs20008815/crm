@@ -15,7 +15,6 @@ define(['jquery', 'underscore', 'backbone', 'iziToast'
                 "edit": _.template(edit)
             },
             initialize: function (option) {
-                console.log(option);
                 this.option = option;
                 this.render();
 

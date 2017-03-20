@@ -19,4 +19,12 @@ public interface SysGuestMapper extends BaseMapper<SysGuest, String>  {
     Integer updateByPrimaryKey(SysGuest record);
 
     List<Map> selectByOther(Map map);
+
+    List<Map> selectPage(Map map);
+
+    List<Map> selectPageByMk(Map map);
+
+    Integer selectCount(Map map);
+
+    Integer insertBatch(List<SysGuest> record);
 }

@@ -22,10 +22,10 @@
       select sys_menu.sid sid, sys_menu.attr1 sname, sys_menu.attr2 url, sys_menu.attr3 className
             from sys_menu
             INNER JOIN sys_role_menu on sys_role_menu.attr2 = sys_menu.sid
-            and sys_role_menu.attr20 = '1'
+            and sys_role_menu.attr20 = '1' and sys_role_menu.attr1 = #{attr1,jdbcType=VARCHAR}
             WHERE sys_menu.attr20 = '1' and sys_menu.attr15 = #{attr15,jdbcType=VARCHAR}
             ORDER BY
-            sys_menu.attr18 ASC
+            sys_menu.attr14 ASC
   </select>
 
   <select id="menuByMap1" resultType="java.util.HashMap" parameterType="java.util.Map" >
