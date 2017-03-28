@@ -47,35 +47,106 @@
   </insert>
   <select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
     <![CDATA[
-    select
-    COUNT(*)
+    select COUNT(*)
     from sys_guest
-    where attr20 = '1'
+    LEFT JOIN sys_guest_look on sys_guest_look.attr20 = 1 and sys_guest_look.attr1 = sys_guest.sid
+    where sys_guest.attr20 = 1
     ]]>
-    <if test="sid != null">
-      and sid = #{sid,jdbcType=CHAR}
-    </if>
     <if test="attr1 != null">
-      and (attr1 LIKE CONCAT('%',#{attr1},'%')
-      or attr2 LIKE CONCAT('%',#{attr1},'%')
-      or attr3 LIKE CONCAT('%',#{attr1},'%')
-      or attr4 LIKE CONCAT('%',#{attr1},'%')
-      or attr5 LIKE CONCAT('%',#{attr1},'%')
-      or attr6 LIKE CONCAT('%',#{attr1},'%')
-      or attr7 LIKE CONCAT('%',#{attr1},'%')
-      or attr8 LIKE CONCAT('%',#{attr1},'%')
-      or attr9 LIKE CONCAT('%',#{attr1},'%')
-      or attr10 LIKE CONCAT('%',#{attr1},'%')
-      or attr11 LIKE CONCAT('%',#{attr1},'%')
-      or attr12 LIKE CONCAT('%',#{attr1},'%')
-      or attr13 LIKE CONCAT('%',#{attr1},'%')
-      or attr14 LIKE CONCAT('%',#{attr1},'%')
-      or attr15 LIKE CONCAT('%',#{attr1},'%')
-      or attr16 LIKE CONCAT('%',#{attr1},'%')
-      or attr17 LIKE CONCAT('%',#{attr1},'%')
-      or attr18 LIKE CONCAT('%',#{attr1},'%')
-      or attr19 LIKE CONCAT('%',#{attr1},'%'))
+      and (sys_guest.attr1 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr2 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr3 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr4 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr5 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr6 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr7 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr8 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr9 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr10 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr11 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr12 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr13 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr14 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr15 LIKE CONCAT('%',#{attr1},'%'))
     </if>
+    <if test="attr4 != null">
+      and sys_guest.attr4 = #{attr4}
+    </if>
+    <if test="attr5 != null">
+      and sys_guest.attr5 = #{attr5}
+    </if>
+    ORDER BY
+    sys_guest.attr19 DESC
+  </select>
+
+  <select id="selectPage" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select sys_guest.sid, sys_guest.attr1, sys_guest.attr3 attr2,
+    sys_guest_look.attr3, sys_guest_look.attr4, sys_guest_look.attr5,
+    sys_guest_look.attr6, sys_guest_look.attr7, sys_guest_look.attr8,
+    sys_guest_look.attr9, sys_guest_look.attr10, sys_guest_look.attr11,
+    sys_guest_look.attr12 , sys_guest_look.attr13, sys_guest_look.attr14,
+    sys_guest_look.attr15, sys_guest_look.attr17, sys_guest_look.attr19
+    from sys_guest
+    LEFT JOIN sys_guest_look on sys_guest_look.attr20 = 1 and sys_guest_look.attr1 = sys_guest.sid
+    where sys_guest.attr20 = 1
+    <if test="attr1 != null">
+      and (sys_guest.attr1 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr2 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr3 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr4 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr5 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr6 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr7 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr8 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr9 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr10 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr11 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr12 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr13 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr14 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr15 LIKE CONCAT('%',#{attr1},'%'))
+    </if>
+    <if test="attr4 != null">
+      and sys_guest.attr4 = #{attr4}
+    </if>
+    <if test="attr5 != null">
+      and sys_guest.attr5 = #{attr5}
+    </if>
+    ORDER BY
+    sys_guest.attr19 DESC
+    <if test="pageStart != null and pageSize != null">
+      limit #{pageStart,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="selectCountByMk" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <![CDATA[
+    select
+    COUNT(*) from sys_guest
+      LEFT JOIN sys_guest_look on sys_guest_look.attr20 = 1 and sys_guest_look.attr1 = sys_guest.sid
+      RIGHT JOIN sys_guest_mk on sys_guest_mk.attr20 = 1
+      and sys_guest_mk.attr1 = sys_guest.sid and sys_guest_mk.attr2 = #{userid,jdbcType=VARCHAR}
+      where sys_guest.attr20 = 1
+    ]]>
+    <if test="attr1 != null">
+      and (sys_guest.attr1 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr2 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr3 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr4 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr5 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr6 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr7 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr8 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr9 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr10 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr11 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr12 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr13 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr14 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest_look.attr15 LIKE CONCAT('%',#{attr1},'%'))
+    </if>
+    ORDER BY
+    sys_guest.attr19 DESC
   </select>
   <select id="selectPageByMk" parameterType="java.util.Map" resultType="java.util.HashMap">
     select sys_guest.sid, sys_guest.attr1, sys_guest.attr2, sys_guest_look.attr3,
@@ -111,32 +182,48 @@
       limit #{pageStart,jdbcType=VARCHAR},#{pageSize,jdbcType=VARCHAR}
     </if>
   </select>
-  <select id="selectPage" parameterType="java.util.Map" resultType="java.util.HashMap">
-    select sys_guest.sid, sys_guest.attr1, sys_guest.attr3 attr2,
-    sys_guest_look.attr3, sys_guest_look.attr4, sys_guest_look.attr5,
-    sys_guest_look.attr6, sys_guest_look.attr7, sys_guest_look.attr8,
-    sys_guest_look.attr9, sys_guest_look.attr10, sys_guest_look.attr11,
-    sys_guest_look.attr12 , sys_guest_look.attr13, sys_guest_look.attr14,
-    sys_guest_look.attr15, sys_guest_look.attr17, sys_guest_look.attr19
-    from sys_guest
-    LEFT JOIN sys_guest_look on sys_guest_look.attr20 = 1 and sys_guest_look.attr1 = sys_guest.sid
-    where sys_guest.attr20 = 1
+  <select id="selectCountTMK" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select count(*) from sys_guest where attr5 is null
+    and sys_guest.attr20 = 1
     <if test="attr1 != null">
       and (sys_guest.attr1 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr2 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr3 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr4 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr5 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr6 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr7 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr8 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr9 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr10 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr11 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr12 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr13 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr14 LIKE CONCAT('%',#{attr1},'%')
-      or sys_guest_look.attr15 LIKE CONCAT('%',#{attr1},'%'))
+      or sys_guest.attr2 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr3 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr4 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr5 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr6 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr7 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr8 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr9 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr10 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr11 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr12 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr13 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr14 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr15 LIKE CONCAT('%',#{attr1},'%'))
+    </if>
+    ORDER BY
+    sys_guest.attr19 DESC
+  </select>
+  <select id="selectPageTMK" parameterType="java.util.Map" resultType="java.util.HashMap">
+    select * from sys_guest where attr5 is null
+    and sys_guest.attr20 = 1
+    <if test="attr1 != null">
+      and (sys_guest.attr1 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr2 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr3 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr4 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr5 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr6 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr7 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr8 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr9 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr10 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr11 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr12 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr13 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr14 LIKE CONCAT('%',#{attr1},'%')
+      or sys_guest.attr15 LIKE CONCAT('%',#{attr1},'%'))
     </if>
     ORDER BY
     sys_guest.attr19 DESC

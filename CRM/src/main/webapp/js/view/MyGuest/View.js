@@ -109,7 +109,7 @@ define(['jquery', 'underscore', 'backbone'
                 this.$("#querynoresult").css({"display": "none"});
                 var userModel = new Backbone.Model;
                 userModel.fetchEx(pageOpt,{
-                    url : 'api/guest/queryPage',
+                    url : 'api/guest/queryPageTMK',
                     success: function (data) {
                         var entity = data.get("output");
                         this.$("#tbody").html(_this.templates.List(entity.pageData));
@@ -148,7 +148,7 @@ define(['jquery', 'underscore', 'backbone'
                 this.$("#querynoresult").css({"display": "none"});
                 var model = new Backbone.Model;
                 model.fetchEx(pageOpt,{
-                    url : 'api/guest/queryPage',
+                        url : 'api/guest/queryPageTMK',
                     success: function (data) {
                         var entity = data.get("output");
                         this.$("#tbody").html(_this.templates.List(entity.pageData));

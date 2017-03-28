@@ -3,16 +3,16 @@ package org.clj.crmproj.controller;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.clj.crmproj.entity.SysGuest;
 import org.clj.crmproj.entity.SysGuestLook;
+import org.clj.crmproj.entity.SysGuestTmk;
 import org.clj.crmproj.service.GuestLookService;
 import org.clj.crmproj.service.GuestService;
+import org.clj.crmproj.service.GuestTmkService;
 import org.clj.crmproj.util.EhcacheUtil;
 import org.clj.crmproj.util.Response;
 import org.springframework.stereotype.Controller;
@@ -36,6 +36,9 @@ public class GuestController {
     @Resource
     private GuestLookService guestLookService;
 
+    @Resource
+    private GuestTmkService guestTmkService;
+
     @RequestMapping(value = "/query/{id}")
     @ResponseBody
     public Response query(@PathVariable(value = "id") String id) throws Exception{
@@ -54,6 +57,21 @@ public class GuestController {
         return new Response(service.queryByOther(requestMap));
     }
 
+    @RequestMapping(value = "/queryPageByMk")
+    @ResponseBody
+    public Response queryPageByMk(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+        Map resMap = new HashMap();
+        requestMap.put("userid",user.get("uid").toString());
+        resMap.put("pageCount", service.queryCountByMk(requestMap));
+        resMap.put("pageData", service.queryPageByMk(requestMap));
+        return new Response(resMap);
+    }
+
     @RequestMapping(value = "/queryPage")
     @ResponseBody
     public Response queryPage(@RequestBody Map requestMap) throws Exception{
@@ -65,8 +83,46 @@ public class GuestController {
         Map resMap = new HashMap();
         requestMap.put("userid",user.get("uid").toString());
         resMap.put("pageCount", service.queryCount(requestMap));
-        resMap.put("pageData", service.queryPageByMk(requestMap));
+        resMap.put("pageData", service.queryPage(requestMap));
         return new Response(resMap);
+    }
+
+    @RequestMapping(value = "/queryPageTMK")
+    @ResponseBody
+    public Response queryPageTMK(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+        Map resMap = new HashMap();
+        requestMap.put("attr5",user.get("uid").toString());
+        resMap.put("pageCount", service.queryCount(requestMap));
+        resMap.put("pageData", service.queryPage(requestMap));
+        return new Response(resMap);
+    }
+
+    @RequestMapping(value = "/addGuestForTMK")
+    @ResponseBody
+    public Response addGuestForTMK(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+
+        String [] guestIds= requestMap.get("data").toString().split(",");
+        String userId = requestMap.get("user").toString();
+        for(String str : guestIds){
+            SysGuest sysGuest = new SysGuest();
+            sysGuest.setSid(str);
+            sysGuest.setAttr5(userId);
+            sysGuest.setAttr18(user.get("uid").toString());
+            sysGuest.setAttr19(new Date().toLocaleString());
+            sysGuest.setAttr20("1");
+            service.editByPrimaryKeySelective(sysGuest);
+        }
+        return new Response();
     }
 
     @RequestMapping(value = "/add")

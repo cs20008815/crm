@@ -22,9 +22,15 @@ public interface SysGuestMapper extends BaseMapper<SysGuest, String>  {
 
     List<Map> selectPage(Map map);
 
+    List<Map> selectPageTMK(Map map);
+
     List<Map> selectPageByMk(Map map);
 
     Integer selectCount(Map map);
+
+    Integer selectCountTMK(Map map);
+
+    Integer selectCountByMk(Map map);
 
     Integer insertBatch(List<SysGuest> record);
 }

@@ -2243,6 +2243,7 @@ div#rMenu ul li{
 .patrolcheckboxlabel .checkbox{visibility: hidden;}
 .patrolcheckboxlabel{display: inline-block; *display:inline;*zoom:1;height: 18px;width: 18px;vertical-align: middle;cursor: pointer;background: url(../img/icon-h.png) -152px -54px no-repeat;}
 .patrolcheckboxlabel.yes{background: url(../img/icon-h.png) -152px -20px no-repeat;}
+.patrolcheckboxlabel.allyes{background: url(../img/icon-h.png) -152px -20px no-repeat;}
 .tanc .cj-content .top-box{
     border: 1px solid #E1E1E1;
     margin-bottom: 5px;

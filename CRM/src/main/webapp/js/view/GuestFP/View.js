@@ -38,7 +38,7 @@ define(['jquery', 'underscore', 'backbone'
                 });
 
                 this.$("#user").autoselect({
-                    source:"api/user/query",
+                    source:"api/user/queryUserByDept",
                     searchParam:"attr1",
                     label:["attr3"],
                     id:"sid"
@@ -48,18 +48,35 @@ define(['jquery', 'underscore', 'backbone'
             },
             events: {
                 "click #add":"add",
-                "click .patrolcheckboxlabel":"checkboxlabel",
+                "click span[sid]":"checkboxlabel",
                 "click #look":"look",
                 "click #change":"change",
                 "click #delete":"delete",
                 "input #name":"queryDate",
-                "click #search":"queryDate"
+                "click #search":"queryDate",
+                "click #all":"all"
             },
             checkboxlabel: function(e){
-                $(e.currentTarget).hasClass("yes") ? $(e.currentTarget).removeClass("yes") : $(e.currentTarget).addClass("yes")
+                this.$(e.currentTarget).hasClass("yes") ?
+                    this.$(e.currentTarget).removeClass("yes") :
+                    this.$(e.currentTarget).addClass("yes");
+                if(this.$(".yes").length == this.$("span[sid]").length){
+                    this.$("#all").addClass("allyes");
+                }else{
+                    this.$("#all").removeClass("allyes")
+                }
             },
             search: function(){
 
+            },
+            all:function(e){
+                if(this.$(e.currentTarget).hasClass("allyes")){
+                    this.$(e.currentTarget).removeClass("allyes");
+                    this.$("span[sid]").removeClass("yes");
+                }else{
+                    this.$(e.currentTarget).addClass("allyes");
+                    this.$("span[sid]").addClass("yes");
+                }
             },
             queryDate: function(){
                 var _this = this;
@@ -78,9 +95,10 @@ define(['jquery', 'underscore', 'backbone'
                 this.$("#querynoresult").css({"display": "none"});
                 var userModel = new Backbone.Model;
                 userModel.fetchEx(pageOpt,{
-                    url : 'api/guest/queryPage',
+                    url : 'api/guest/queryPageTMK',
                     success: function (data) {
                         var entity = data.get("output");
+                        console.log(entity);
                         this.$("#tbody").html(_this.templates.List(entity.pageData));
                         var totalNum = entity.pageCount;  //总页数
                         var pageView = new PageView({
@@ -124,10 +142,35 @@ define(['jquery', 'underscore', 'backbone'
                 var _this = this;
                 var user = _this.$("#user").attr("inputid");
                 var list = _this.$(".yes");
+                var guestList = "";
                 for(var i = 0; i < list.length; i++){
-                    console.log($(list[i]).attr("sid"));
+                    guestList += $(list[i]).attr("sid");
+                    if(i != list.length-1){
+                        guestList += ",";
+                    }
                 }
-                console.log(user);
+                if(typeof user == "undefined"){
+                    iziNotyf.alert("请选择TMK");
+                    return;
+                }
+
+                if(guestList == ""){
+                    iziNotyf.alert("请选择客户");
+                    return;
+                }
+
+                var model = new Backbone.Model;
+                model.fetchEx({data:guestList,user:user},{
+                    url : 'api/guest/addGuestForTMK',
+                    success: function (data) {
+                        var entity = data.get("output");
+                        if(data && data.get("status") == "S"){
+                            iziNotyf.confirm("分配成功");
+                            _this.$("#all").removeClass("allyes");
+                            _this.queryDate();
+                        }
+                    }
+                });
             },
             look: function(e){
                 var view = new Look({id:$(e.currentTarget).attr("sid")});

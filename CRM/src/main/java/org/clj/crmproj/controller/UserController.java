@@ -1,5 +1,8 @@
 package org.clj.crmproj.controller;
 
+import org.clj.crmproj.entity.SysUser;
+import org.clj.crmproj.service.DeptRoleService;
+import org.clj.crmproj.service.RoleService;
 import org.clj.crmproj.service.UserService;
 import org.clj.crmproj.util.EhcacheUtil;
 import org.clj.crmproj.util.Response;
@@ -23,6 +26,10 @@ import java.util.Map;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private RoleService roleService;
+    @Resource
+    private DeptRoleService deptRoleService;
 
     @RequestMapping(value = "/queryUserList")
     @ResponseBody
@@ -53,8 +60,30 @@ public class UserController {
             return new Response("LOGIN_TIME_OUT","登陆超时");
         }
         Map user = (Map)o;
-        System.out.println(user.toString());
 
         return new Response(userService.queryByOther(requestMap));
+    }
+
+    @RequestMapping(value = "/queryUserByDept")
+    @ResponseBody
+    public Response queryUserByDept(@RequestBody Map requestMap) throws Exception{
+        Object o = EhcacheUtil.getInstance().get("user");
+        if(null == o){
+            return new Response("LOGIN_TIME_OUT","登陆超时");
+        }
+        Map user = (Map)o;
+        Map roleMap = new HashMap();
+        roleMap.put("attr3",user.get("roleId"));
+        List<Map> roles = roleService.queryByOther(roleMap);
+        List<SysUser> sysUsers = new ArrayList<SysUser>();
+        for(Map role : roles){
+            Map deptRoleMap = new HashMap();
+            deptRoleMap.put("attr2", role.get("sid"));
+            List<Map> deptRoles = deptRoleService.queryByOther(deptRoleMap);
+            for(Map deptRole : deptRoles){
+                sysUsers.add(userService.queryByPrimaryKey(deptRole.get("attr3").toString()));
+            }
+        }
+        return new Response(sysUsers);
     }
 }

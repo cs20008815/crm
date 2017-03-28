@@ -1,10 +1,7 @@
 package org.clj.crmproj.controller;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.clj.crmproj.entity.SysDeptRole;
-import org.clj.crmproj.entity.SysRole;
-import org.clj.crmproj.entity.SysSchoolDept;
-import org.clj.crmproj.entity.SysUserSchool;
+import org.clj.crmproj.entity.*;
 import org.clj.crmproj.service.*;
 import org.clj.crmproj.util.EhcacheUtil;
 import org.clj.crmproj.util.Response;
@@ -49,6 +46,16 @@ public class RoleController {
     public Response query(@PathVariable(value = "id") String id) throws Exception{
         Map reqMap = new HashMap();
         reqMap.put("sid",id);
+        return new Response(service.queryByOther(reqMap));
+    }
+
+    @RequestMapping(value = "/queryattr3/{attr}")
+    @ResponseBody
+    public Response queryattr3(@PathVariable(value = "attr") String attr) throws Exception{
+        Map reqMap = new HashMap();
+        reqMap.put("attr2", attr);
+        reqMap.put("attr3", "0");
+        System.out.println(reqMap.toString());
         return new Response(service.queryByOther(reqMap));
     }
 

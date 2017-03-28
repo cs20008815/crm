@@ -60,10 +60,17 @@ public class GuestServiceImpl extends BaseServiceImpl implements GuestService {
         return sysGuestMapper.selectByOther(record);
     }
 
+    @Override
     public List<Map> queryPage(Map record) {
         return sysGuestMapper.selectPage(record);
     }
 
+    @Override
+    public List<Map> queryPageTMK(Map record) {
+        return sysGuestMapper.selectPageTMK(record);
+    }
+
+    @Override
     public List<Map> queryPageByMk(Map record) {
         return sysGuestMapper.selectPageByMk(record);
     }
@@ -71,6 +78,16 @@ public class GuestServiceImpl extends BaseServiceImpl implements GuestService {
     @Override
      public int queryCount(Map map){
         return sysGuestMapper.selectCount(map);
+    }
+
+    @Override
+    public int queryCountTMK(Map map){
+        return sysGuestMapper.selectCountTMK(map);
+    }
+
+    @Override
+    public int queryCountByMk(Map map){
+        return sysGuestMapper.selectCountByMk(map);
     }
 
     @Override
