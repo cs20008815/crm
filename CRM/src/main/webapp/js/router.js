@@ -26,6 +26,7 @@ define(['jquery', 'underscore', 'backbone'
 ) {
     var AppRouter = Backbone.Router.extend({
         routes: {
+            "": "home",
             "sy": "home",
             "index":"home",
             "quanxianSetting":"quanxianSetting",
